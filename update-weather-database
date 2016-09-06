@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+#
+# This file is part of weatherlogd.
+#
+# weatherlogd is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# weatherlogd is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with weatherlogd.  If not, see <http://www.gnu.org/licenses/>.
+
+# pylint: disable=broad-except
+# pylint: disable=too-few-public-methods
+# pylint: disable=invalid-name
+# pylint: disable=no-self-use
+
+"""Periodically polls the weather sensors and inserts them into the weather database."""
+
+import datetime
+import time
+import pymysql
+import warwick.observatory as observatory
+
+DATABASE_DB = 'ops'
+DATABASE_USER = 'ops'
+
+# Record in 5 minute steps
+MEASUREMENT_BIN_SIZE = 300
+
+# Bin zero is at ~start of 2016
+MEASUREMENT_BIN_OFFSET = 4838688
+
+ONEMETRE_VAISALA = {
+    'daemon': observatory.daemons.onemetre_vaisala,
+    'table': 'weather_onemetre_vaisala',
+    'columns': [
+        'temperature', 'temperature_valid',
+        'relative_humidity', 'relative_humidity_valid',
+        'wind_direction', 'wind_direction_valid',
+        'wind_speed', 'wind_speed_valid',
+        'pressure', 'pressure_valid',
+        'accumulated_rain', 'accumulated_rain_valid',
+        'dew_point_delta', 'dew_point_delta_valid',
+    ]
+}
+
+ONEMETRE_ROOMALERT = {
+    'daemon': observatory.daemons.onemetre_roomalert,
+    'table': 'weather_onemetre_roomalert',
+    'columns': [ 'internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity', \
+        'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe' ]
+}
+
+ONEMETRE_RAINDETECTOR = {
+    'daemon': observatory.daemons.onemetre_rain,
+    'table': 'weather_onemetre_raindetector',
+    'columns':  [ 'unsafe_boards', 'total_boards', 'port1' ]
+}
+
+ONEMETRE_UPS = {
+    'daemon': observatory.daemons.onemetre_power,
+    'table': 'weather_onemetre_ups',
+    'columns':  [ 'main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
+        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load' ]
+}
+
+SUPERWASP = {
+    'daemon': observatory.daemons.superwasp_log,
+    'table': 'weather_superwasp',
+    'columns': [ 'ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
+        'sky_temp', 'dew_point_delta']
+}
+
+NETWORK = {
+    'daemon': observatory.daemons.onemetre_network_ping,
+    'table': 'weather_network',
+    'columns': [ 'ngtshead', 'google' ]
+}
+
+def __run_sensor_update(sensor):
+    """Reads a sensor and updates the database"""
+    try:
+        with sensor['daemon'].connect() as d:
+            data = d.last_measurement()
+
+        date = datetime.datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%SZ')
+        measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) - MEASUREMENT_BIN_OFFSET
+        insert = 'REPLACE INTO ' + sensor['table'] + ' (' + ', '.join(['bin'] + sensor['columns']) \
+            + ') VALUES (' + ', '.join([str(measurement_bin)] \
+            + [db.escape(data[x]) for x in sensor['columns']]) + ');'
+
+        with db.cursor() as cur:
+            cur.execute(insert)
+    except Exception as e:
+        print('Failed to update ' + sensor['table'] + ' with error: ' + str(e))
+
+if __name__ == '__main__':
+    db = pymysql.connect(db=DATABASE_DB, user=DATABASE_USER, autocommit=True)
+    __run_sensor_update(ONEMETRE_VAISALA)
+    __run_sensor_update(ONEMETRE_ROOMALERT)
+    __run_sensor_update(ONEMETRE_RAINDETECTOR)
+    __run_sensor_update(ONEMETRE_UPS)
+    __run_sensor_update(SUPERWASP)
+    __run_sensor_update(NETWORK)
