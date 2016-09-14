@@ -74,7 +74,7 @@ SUPERWASP = {
     'daemon': observatory.daemons.superwasp_log,
     'table': 'weather_superwasp',
     'columns': [ 'ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
-        'sky_temp', 'dew_point_delta']
+        'sky_temp', 'pressure', 'dew_point_delta']
 }
 
 NETWORK = {

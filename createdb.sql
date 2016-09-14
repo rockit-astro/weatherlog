@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS `weather_superwasp` (
   `wind_speed` FLOAT NOT NULL,
   `wind_direction` FLOAT NOT NULL,
   `sky_temp` FLOAT NOT NULL,
+  `pressure` FLOAT NOT NULL,
   `dew_point_delta` FLOAT NOT NULL,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB;
