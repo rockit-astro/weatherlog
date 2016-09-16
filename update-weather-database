@@ -57,6 +57,13 @@ ONEMETRE_ROOMALERT = {
         'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe' ]
 }
 
+NITES_ROOMALERT = {
+    'daemon': observatory.daemons.nites_roomalert,
+    'table': 'weather_nites_roomalert',
+    'columns': [ 'internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity', \
+        'security_system', 'mains_power' ]
+}
+
 ONEMETRE_RAINDETECTOR = {
     'daemon': observatory.daemons.onemetre_rain,
     'table': 'weather_onemetre_raindetector',
@@ -106,5 +113,6 @@ if __name__ == '__main__':
     __run_sensor_update(ONEMETRE_ROOMALERT)
     __run_sensor_update(ONEMETRE_RAINDETECTOR)
     __run_sensor_update(ONEMETRE_UPS)
+    __run_sensor_update(NITES_ROOMALERT)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(NETWORK)
