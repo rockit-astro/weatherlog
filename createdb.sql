@@ -45,6 +45,16 @@ CREATE TABLE IF NOT EXISTS `weather_nites_roomalert` (
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `weather_goto_roomalert` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` TIMESTAMP NOT NULL,
+  `internal_temp` FLOAT NOT NULL,
+  `internal_humidity` FLOAT NOT NULL,
+  `roomalert_temp` FLOAT NOT NULL,
+  `roomalert_humidity` FLOAT NOT NULL,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS `weather_onemetre_raindetector` (
   `bin` int(10) unsigned NOT NULL,
   `date` TIMESTAMP NOT NULL,
