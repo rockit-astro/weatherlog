@@ -92,10 +92,15 @@ CREATE TABLE IF NOT EXISTS `weather_superwasp` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `weather_network` (
-  `bin` int(10) unsigned NOT NULL,
-  `date` TIMESTAMP NOT NULL,
-  `ngtshead` FLOAT NOT NULL,
-  `google` FLOAT NOT NULL,
-  PRIMARY KEY (`bin`)
-) ENGINE=InnoDB;
+  `bin` int(10) UNSIGNED NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `ngtshead` float NOT NULL DEFAULT '-1',
+  `google` float NOT NULL DEFAULT '-1',
+  `onemetre` float NOT NULL DEFAULT '-1',
+  `goto` float NOT NULL DEFAULT '-1',
+  `nites` float NOT NULL DEFAULT '-1',
+  `swasp` float NOT NULL DEFAULT '-1',
+  `swasp_gateway` float NOT NULL DEFAULT '-1',
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

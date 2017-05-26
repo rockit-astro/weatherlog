@@ -93,9 +93,9 @@ SUPERWASP = {
 }
 
 NETWORK = {
-    'daemon': observatory.daemons.onemetre_network_ping,
+    'daemon': observatory.daemons.observatory_network_ping,
     'table': 'weather_network',
-    'columns': [ 'ngtshead', 'google' ]
+    'columns': [ 'ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway' ]
 }
 
 def __run_sensor_update(sensor):
