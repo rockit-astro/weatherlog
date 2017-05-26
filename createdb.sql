@@ -1,23 +1,25 @@
 
 CREATE TABLE IF NOT EXISTS `weather_onemetre_vaisala` (
-  `bin` int(10) unsigned NOT NULL,
-  `date` TIMESTAMP NOT NULL,
-  `temperature` FLOAT NOT NULL,
-  `temperature_valid` BOOLEAN NOT NULL,
-  `relative_humidity` FLOAT NOT NULL,
-  `relative_humidity_valid` BOOLEAN NOT NULL,
-  `wind_direction` FLOAT NOT NULL,
-  `wind_direction_valid` BOOLEAN NOT NULL,
-  `wind_speed` FLOAT NOT NULL,
-  `wind_speed_valid` BOOLEAN NOT NULL,
-  `pressure` FLOAT NOT NULL,
-  `pressure_valid` BOOLEAN NOT NULL,
-  `accumulated_rain` FLOAT NOT NULL,
-  `accumulated_rain_valid` BOOLEAN NOT NULL,
-  `dew_point_delta` FLOAT NOT NULL,
-  `dew_point_delta_valid` BOOLEAN NOT NULL,
-  PRIMARY KEY (`bin`)
-) ENGINE=InnoDB;
+  `bin` int(10) UNSIGNED NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `temperature` float NOT NULL,
+  `temperature_valid` tinyint(1) NOT NULL,
+  `relative_humidity` float NOT NULL,
+  `relative_humidity_valid` tinyint(1) NOT NULL,
+  `wind_direction` float NOT NULL,
+  `wind_direction_valid` tinyint(1) NOT NULL,
+  `wind_speed` float NOT NULL,
+  `wind_speed_valid` tinyint(1) NOT NULL,
+  `pressure` float NOT NULL,
+  `pressure_valid` tinyint(1) NOT NULL,
+  `accumulated_rain` float NOT NULL,
+  `accumulated_rain_valid` tinyint(1) NOT NULL,
+  `rain_intensity` float NOT NULL,
+  `rain_intensity_valid` tinyint(1) NOT NULL,
+  `dew_point_delta` float NOT NULL,
+  `dew_point_delta_valid` tinyint(1) NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `weather_onemetre_roomalert` (
   `bin` int(10) unsigned NOT NULL,

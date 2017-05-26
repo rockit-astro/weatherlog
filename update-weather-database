@@ -46,6 +46,7 @@ ONEMETRE_VAISALA = {
         'wind_speed', 'wind_speed_valid',
         'pressure', 'pressure_valid',
         'accumulated_rain', 'accumulated_rain_valid',
+        'rain_intensity', 'rain_intensity_valid',
         'dew_point_delta', 'dew_point_delta_valid',
     ]
 }
