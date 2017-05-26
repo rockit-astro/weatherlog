@@ -16,9 +16,7 @@
 # along with weatherlogd.  If not, see <http://www.gnu.org/licenses/>.
 
 # pylint: disable=broad-except
-# pylint: disable=too-few-public-methods
 # pylint: disable=invalid-name
-# pylint: disable=no-self-use
 
 """Periodically polls the weather sensors and inserts them into the weather database."""
 
@@ -54,48 +52,48 @@ ONEMETRE_VAISALA = {
 ONEMETRE_ROOMALERT = {
     'daemon': observatory.daemons.onemetre_roomalert,
     'table': 'weather_onemetre_roomalert',
-    'columns': [ 'internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity', \
-        'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe' ]
+    'columns': ['internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity', \
+        'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe']
 }
 
 NITES_ROOMALERT = {
     'daemon': observatory.daemons.nites_roomalert,
     'table': 'weather_nites_roomalert',
-    'columns': [ 'internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity', \
-        'security_system', 'mains_power' ]
+    'columns': ['internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity', \
+        'security_system', 'mains_power']
 }
 
 GOTO_ROOMALERT = {
     'daemon': observatory.daemons.goto_roomalert,
     'table': 'weather_goto_roomalert',
-    'columns': [ 'internal_temp', 'internal_humidity', 'roomalert_temp', \
-        'roomalert_humidity' ]
+    'columns': ['internal_temp', 'internal_humidity', 'roomalert_temp', \
+        'roomalert_humidity']
 }
 
 ONEMETRE_RAINDETECTOR = {
     'daemon': observatory.daemons.onemetre_rain,
     'table': 'weather_onemetre_raindetector',
-    'columns':  [ 'unsafe_boards', 'total_boards', 'port1' ]
+    'columns':  ['unsafe_boards', 'total_boards', 'port1']
 }
 
 ONEMETRE_UPS = {
     'daemon': observatory.daemons.onemetre_power,
     'table': 'weather_onemetre_ups',
-    'columns':  [ 'main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
-        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load' ]
+    'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
+        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
 }
 
 SUPERWASP = {
     'daemon': observatory.daemons.superwasp_log,
     'table': 'weather_superwasp',
-    'columns': [ 'ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
+    'columns': ['ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
         'sky_temp', 'pressure', 'dew_point_delta']
 }
 
 NETWORK = {
     'daemon': observatory.daemons.observatory_network_ping,
     'table': 'weather_network',
-    'columns': [ 'ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway' ]
+    'columns': ['ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway']
 }
 
 def __run_sensor_update(sensor):

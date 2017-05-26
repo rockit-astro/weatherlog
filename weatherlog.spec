@@ -1,5 +1,5 @@
 Name:      onemetre-weatherlog
-Version:   1.17
+Version:   1.18
 Release:   0
 Url:       https://github.com/warwick-one-metre/weatherlogd
 Summary:   Weather logger for the Warwick one-metre telescope.
