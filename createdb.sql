@@ -74,6 +74,18 @@ CREATE TABLE IF NOT EXISTS `weather_onemetre_ups` (
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `weather_goto_ups` (
+  `bin` int(10) UNSIGNED NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `main_ups_status` tinyint(2) NOT NULL,
+  `main_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
+  `main_ups_load` tinyint(3) UNSIGNED NOT NULL,
+  `dome_ups_status` tinyint(2) NOT NULL,
+  `dome_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
+  `dome_ups_load` tinyint(3) UNSIGNED NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `weather_superwasp` (
   `bin` int(10) UNSIGNED NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,

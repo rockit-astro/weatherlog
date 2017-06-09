@@ -83,6 +83,13 @@ ONEMETRE_UPS = {
         'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
 }
 
+GOTO_UPS = {
+    'daemon': observatory.daemons.goto_ups,
+    'table': 'weather_goto_ups',
+    'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
+        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
+}
+
 SUPERWASP = {
     'daemon': observatory.daemons.superwasp_log,
     'table': 'weather_superwasp',
@@ -132,5 +139,6 @@ if __name__ == '__main__':
     __run_sensor_update(ONEMETRE_UPS)
     __run_sensor_update(NITES_ROOMALERT)
     __run_sensor_update(GOTO_ROOMALERT)
+    __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(NETWORK)
