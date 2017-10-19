@@ -21,6 +21,21 @@ sudo systemctl start update-weather-database.timer
 
 The script requires a MySQL or MariaDB database to be hosted on the same machine.
 It will connect with the user account `ops` (no password) and write to the database `ops`.
+
+After installing `mariadb` configure the default options by running:
+```
+sudo mysql_secure_installation
+```
+
+Set a root password, remove anonymous accounts, disable remote root login and test database.
+
+Log in as root (`mysql -u root -p`) and the run the following to create the ops user:
+
+```sql
+CREATE USER 'ops'@'localhost';
+GRANT ALL ON ops.* TO 'ops'@'localhost';
+```
+
 The database can be created using:
 ```sql
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -28,79 +43,66 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `ops` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `ops`;
 
-CREATE TABLE `dashboard_config` (
-  `id` int(11) NOT NULL,
-  `keyname` text NOT NULL,
-  `value` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `obslog` (
-  `id` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `type` enum('error','warning','info') NOT NULL,
-  `source` text NOT NULL,
-  `message` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 CREATE TABLE `weather_goto_roomalert` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `internal_temp` float NOT NULL,
   `internal_humidity` float NOT NULL,
   `roomalert_temp` float NOT NULL,
-  `roomalert_humidity` float NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `roomalert_humidity` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_goto_ups` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `main_ups_status` tinyint(2) NOT NULL,
   `main_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
   `main_ups_load` tinyint(3) UNSIGNED NOT NULL,
   `dome_ups_status` tinyint(2) NOT NULL,
   `dome_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
-  `dome_ups_load` tinyint(3) UNSIGNED NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `dome_ups_load` tinyint(3) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_network` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `ngtshead` float NOT NULL DEFAULT '-1',
   `google` float NOT NULL DEFAULT '-1',
   `onemetre` float NOT NULL DEFAULT '-1',
   `goto` float NOT NULL DEFAULT '-1',
   `nites` float NOT NULL DEFAULT '-1',
   `swasp` float NOT NULL DEFAULT '-1',
-  `swasp_gateway` float NOT NULL DEFAULT '-1',
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `swasp_gateway` float NOT NULL DEFAULT '-1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_nites_roomalert` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `internal_temperature` float NOT NULL,
   `internal_humidity` float NOT NULL,
   `rack_temperature` float NOT NULL,
   `rack_humidity` float NOT NULL,
   `security_system` tinyint(1) NOT NULL,
-  `mains_power` tinyint(1) NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `mains_power` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_onemetre_raindetector` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `unsafe_boards` tinyint(1) NOT NULL,
   `total_boards` tinyint(1) NOT NULL,
-  `port1` tinyint(1) NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `port1` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_onemetre_roomalert` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `internal_temp` float NOT NULL,
   `internal_humidity` float NOT NULL,
   `roomalert_temp` float NOT NULL,
@@ -108,25 +110,25 @@ CREATE TABLE `weather_onemetre_roomalert` (
   `truss_temp` float NOT NULL,
   `hatch_closed` tinyint(1) NOT NULL,
   `trap_closed` tinyint(1) NOT NULL,
-  `security_system_safe` tinyint(1) NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `security_system_safe` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_onemetre_ups` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `main_ups_status` tinyint(2) NOT NULL,
   `main_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
   `main_ups_load` tinyint(3) UNSIGNED NOT NULL,
   `dome_ups_status` tinyint(2) NOT NULL,
   `dome_ups_battery_remaining` tinyint(3) UNSIGNED NOT NULL,
-  `dome_ups_load` tinyint(3) UNSIGNED NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `dome_ups_load` tinyint(3) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_onemetre_vaisala` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `temperature` float NOT NULL,
   `temperature_valid` tinyint(1) NOT NULL,
   `relative_humidity` float NOT NULL,
@@ -142,29 +144,21 @@ CREATE TABLE `weather_onemetre_vaisala` (
   `rain_intensity` float NOT NULL,
   `rain_intensity_valid` tinyint(1) NOT NULL,
   `dew_point_delta` float NOT NULL,
-  `dew_point_delta_valid` tinyint(1) NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `dew_point_delta_valid` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE `weather_superwasp` (
   `bin` int(10) UNSIGNED NOT NULL,
-  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp NOT NULL,
   `ext_temperature` float NOT NULL,
   `ext_humidity` float NOT NULL,
   `wind_speed` float NOT NULL,
   `wind_direction` float NOT NULL,
   `sky_temp` float NOT NULL,
   `pressure` float NOT NULL,
-  `dew_point_delta` float NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `dew_point_delta` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-ALTER TABLE `dashboard_config`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `obslog`
-  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `weather_goto_roomalert`
   ADD PRIMARY KEY (`bin`);
@@ -192,10 +186,6 @@ ALTER TABLE `weather_onemetre_vaisala`
 
 ALTER TABLE `weather_superwasp`
   ADD PRIMARY KEY (`bin`);
-
-
-ALTER TABLE `dashboard_config`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-ALTER TABLE `obslog`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 ```
+
+These statements may need to be copy/pasted across a few batches.  The `mariadb` client appears to have a bug where it corrupts long paste buffers.
