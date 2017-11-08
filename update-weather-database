@@ -63,6 +63,21 @@ NITES_ROOMALERT = {
         'security_system', 'mains_power']
 }
 
+GOTO_VAISALA = {
+    'daemon': daemons.goto_vaisala,
+    'table': 'weather_goto_vaisala',
+    'columns': [
+        'temperature', 'temperature_valid',
+        'relative_humidity', 'relative_humidity_valid',
+        'wind_direction', 'wind_direction_valid',
+        'wind_speed', 'wind_speed_valid',
+        'pressure', 'pressure_valid',
+        'accumulated_rain', 'accumulated_rain_valid',
+        'rain_intensity', 'rain_intensity_valid',
+        'dew_point_delta', 'dew_point_delta_valid',
+    ]
+}
+
 GOTO_ROOMALERT = {
     'daemon': daemons.goto_roomalert,
     'table': 'weather_goto_roomalert',
@@ -138,6 +153,7 @@ if __name__ == '__main__':
     __run_sensor_update(ONEMETRE_RAINDETECTOR)
     __run_sensor_update(ONEMETRE_UPS)
     __run_sensor_update(NITES_ROOMALERT)
+    __run_sensor_update(GOTO_VAISALA)
     __run_sensor_update(GOTO_ROOMALERT)
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)

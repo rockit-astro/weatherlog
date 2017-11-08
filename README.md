@@ -160,6 +160,29 @@ CREATE TABLE `weather_onemetre_vaisala` (
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `weather_goto_vaisala` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `temperature` float NOT NULL,
+  `temperature_valid` tinyint(1) NOT NULL,
+  `relative_humidity` float NOT NULL,
+  `relative_humidity_valid` tinyint(1) NOT NULL,
+  `wind_direction` float NOT NULL,
+  `wind_direction_valid` tinyint(1) NOT NULL,
+  `wind_speed` float NOT NULL,
+  `wind_speed_valid` tinyint(1) NOT NULL,
+  `pressure` float NOT NULL,
+  `pressure_valid` tinyint(1) NOT NULL,
+  `accumulated_rain` float NOT NULL,
+  `accumulated_rain_valid` tinyint(1) NOT NULL,
+  `rain_intensity` float NOT NULL,
+  `rain_intensity_valid` tinyint(1) NOT NULL,
+  `dew_point_delta` float NOT NULL,
+  `dew_point_delta_valid` tinyint(1) NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `weather_superwasp` (
   `bin` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
