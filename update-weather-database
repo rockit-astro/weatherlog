@@ -112,6 +112,12 @@ SUPERWASP = {
         'sky_temp', 'pressure', 'dew_point_delta']
 }
 
+SUPERWASP_ROOFBATTERY = {
+    'daemon': daemons.superwasp_roofbattery,
+    'table': 'weather_superwasp_roofbattery',
+    'columns': ['voltage']
+}
+
 NETWORK = {
     'daemon': daemons.observatory_network_ping,
     'table': 'weather_network',
@@ -157,4 +163,5 @@ if __name__ == '__main__':
     __run_sensor_update(GOTO_ROOMALERT)
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
+    __run_sensor_update(SUPERWASP_ROOFBATTERY)
     __run_sensor_update(NETWORK)

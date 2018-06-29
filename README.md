@@ -55,8 +55,8 @@ CREATE TABLE `weather_goto_roomalert` (
   `internal_humidity` float NOT NULL,
   `roomalert_temp` float NOT NULL,
   `roomalert_humidity` float NOT NULL,
-  `dome2_internal_temp` float NOT NULL,
-  `dome2_internal_humidity` float NOT NULL,
+  `dome2_internal_temp` float NOT NULL DEFAULT -1,
+  `dome2_internal_humidity` float NOT NULL DEFAULT -1,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -195,6 +195,14 @@ CREATE TABLE `weather_superwasp` (
   `sky_temp` float NOT NULL,
   `pressure` float NOT NULL,
   `dew_point_delta` float NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `weather_superwasp_roofbattery` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `voltage` float NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
