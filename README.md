@@ -74,6 +74,16 @@ CREATE TABLE `weather_goto_ups` (
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `weather_rasa_ups` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ups_status` tinyint(2) NOT NULL,
+  `ups_battery_remaining` tinyint(3) unsigned NOT NULL,
+  `ups_load` tinyint(3) unsigned NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `weather_network` (
   `bin` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',

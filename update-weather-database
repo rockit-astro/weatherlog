@@ -105,6 +105,12 @@ GOTO_UPS = {
         'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
 }
 
+RASA_UPS = {
+    'daemon': daemons.rasa_power,
+    'table': 'weather_rasa_ups',
+    'columns':  ['ups_status', 'ups_battery_remaining', 'ups_load']
+}
+
 SUPERWASP = {
     'daemon': daemons.superwasp_log,
     'table': 'weather_superwasp',
@@ -164,4 +170,5 @@ if __name__ == '__main__':
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(SUPERWASP_ROOFBATTERY)
+    __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
