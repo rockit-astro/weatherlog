@@ -55,6 +55,8 @@ CREATE TABLE `weather_goto_roomalert` (
   `internal_humidity` float NOT NULL,
   `roomalert_temp` float NOT NULL,
   `roomalert_humidity` float NOT NULL,
+  `dome2_internal_temp` float NOT NULL,
+  `dome2_internal_humidity` float NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

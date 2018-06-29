@@ -81,8 +81,8 @@ GOTO_VAISALA = {
 GOTO_ROOMALERT = {
     'daemon': daemons.goto_roomalert,
     'table': 'weather_goto_roomalert',
-    'columns': ['internal_temp', 'internal_humidity', 'roomalert_temp', \
-        'roomalert_humidity']
+    'columns': ['internal_temp', 'internal_humidity', 'dome2_internal_temp', 'dome2_internal_humidity',
+        'roomalert_temp', 'roomalert_humidity']
 }
 
 ONEMETRE_RAINDETECTOR = {
