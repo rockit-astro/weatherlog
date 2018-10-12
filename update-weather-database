@@ -130,6 +130,12 @@ NETWORK = {
     'columns': ['ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway']
 }
 
+EUMETSAT_OPACITY = {
+    'daemon': daemons.eumetsat_opacity,
+    'table': 'weather_eumetsat_opacity',
+    'columns': ['opacity']
+}
+
 def __run_sensor_update(sensor):
     """Reads a sensor and updates the database"""
     try:
@@ -172,3 +178,4 @@ if __name__ == '__main__':
     __run_sensor_update(SUPERWASP_ROOFBATTERY)
     __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
+    __run_sensor_update(EUMETSAT_OPACITY)
