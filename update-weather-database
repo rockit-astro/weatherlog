@@ -124,6 +124,13 @@ SUPERWASP_ROOFBATTERY = {
     'columns': ['voltage']
 }
 
+SUPERWASP_UPS = {
+    'daemon': daemons.superwasp_ups,
+    'table': 'weather_superwasp_ups',
+    'columns':  ['ups1_status', 'ups1_battery_remaining', 'ups1_load', \
+        'ups2_status', 'ups2_battery_remaining', 'ups2_load']
+}
+
 NETWORK = {
     'daemon': daemons.observatory_network_ping,
     'table': 'weather_network',
@@ -176,6 +183,7 @@ if __name__ == '__main__':
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(SUPERWASP_ROOFBATTERY)
+    __run_sensor_update(SUPERWASP_UPS)
     __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
     __run_sensor_update(EUMETSAT_OPACITY)
