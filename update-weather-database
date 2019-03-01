@@ -157,6 +157,20 @@ EUMETSAT_OPACITY = {
     'columns': ['opacity']
 }
 
+TNG_SEEING = {
+    'daemon': daemons.tng_log,
+    'table': 'weather_tng_seeing',
+    'date_key': 'seeing_date',
+    'columns': ['seeing']
+}
+
+ROBODIMM_SEEING = {
+    'daemon': daemons.ing_robodimm,
+    'table': 'weather_robodimm_seeing',
+    'date_key': 'seeing_date',
+    'columns': ['seeing']
+}
+
 def __run_sensor_update(sensor):
     """Reads a sensor and updates the database"""
     try:
@@ -201,3 +215,5 @@ if __name__ == '__main__':
     __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
     __run_sensor_update(EUMETSAT_OPACITY)
+    __run_sensor_update(TNG_SEEING)
+    __run_sensor_update(ROBODIMM_SEEING)

@@ -1,5 +1,5 @@
 Name:      observatory-weather-database-updater
-Version:   2.3.0
+Version:   2.4.0
 Release:   0
 Url:       https://github.com/warwick-one-metre/weatherlogd
 Summary:   Weather logger for the Warwick one-metre telescope.
