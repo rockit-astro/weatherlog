@@ -37,6 +37,7 @@ MEASUREMENT_BIN_OFFSET = 4838688
 ONEMETRE_VAISALA = {
     'daemon': daemons.onemetre_vaisala,
     'table': 'weather_onemetre_vaisala',
+    'date_key': 'date',
     'columns': [
         'temperature', 'temperature_valid',
         'relative_humidity', 'relative_humidity_valid',
@@ -52,6 +53,7 @@ ONEMETRE_VAISALA = {
 ONEMETRE_ROOMALERT = {
     'daemon': daemons.onemetre_roomalert,
     'table': 'weather_onemetre_roomalert',
+    'date_key': 'date',
     'columns': ['internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity', \
         'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe']
 }
@@ -59,6 +61,7 @@ ONEMETRE_ROOMALERT = {
 NITES_ROOMALERT = {
     'daemon': daemons.nites_roomalert,
     'table': 'weather_nites_roomalert',
+    'date_key': None,
     'columns': ['internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity', \
         'security_system', 'mains_power']
 }
@@ -66,6 +69,7 @@ NITES_ROOMALERT = {
 GOTO_VAISALA = {
     'daemon': daemons.goto_vaisala,
     'table': 'weather_goto_vaisala',
+    'date_key': 'date',
     'columns': [
         'temperature', 'temperature_valid',
         'relative_humidity', 'relative_humidity_valid',
@@ -81,6 +85,7 @@ GOTO_VAISALA = {
 GOTO_ROOMALERT = {
     'daemon': daemons.goto_roomalert,
     'table': 'weather_goto_roomalert',
+    'date_key': 'date',
     'columns': ['internal_temp', 'internal_humidity', 'dome2_internal_temp', 'dome2_internal_humidity',
         'roomalert_temp', 'roomalert_humidity']
 }
@@ -88,12 +93,14 @@ GOTO_ROOMALERT = {
 ONEMETRE_RAINDETECTOR = {
     'daemon': daemons.onemetre_rain,
     'table': 'weather_onemetre_raindetector',
+    'date_key': 'date',
     'columns':  ['unsafe_boards', 'total_boards', 'port1']
 }
 
 ONEMETRE_UPS = {
     'daemon': daemons.onemetre_power,
     'table': 'weather_onemetre_ups',
+    'date_key': 'date',
     'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
         'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
 }
@@ -101,6 +108,7 @@ ONEMETRE_UPS = {
 GOTO_UPS = {
     'daemon': daemons.goto_ups,
     'table': 'weather_goto_ups',
+    'date_key': 'date',
     'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
         'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
 }
@@ -108,12 +116,14 @@ GOTO_UPS = {
 RASA_UPS = {
     'daemon': daemons.rasa_power,
     'table': 'weather_rasa_ups',
+    'date_key': 'date',
     'columns':  ['ups_status', 'ups_battery_remaining', 'ups_load']
 }
 
 SUPERWASP = {
     'daemon': daemons.superwasp_log,
     'table': 'weather_superwasp',
+    'date_key': 'date',
     'columns': ['ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
         'sky_temp', 'pressure', 'dew_point_delta']
 }
@@ -121,12 +131,14 @@ SUPERWASP = {
 SUPERWASP_ROOFBATTERY = {
     'daemon': daemons.superwasp_roofbattery,
     'table': 'weather_superwasp_roofbattery',
+    'date_key': 'date',
     'columns': ['voltage']
 }
 
 SUPERWASP_UPS = {
     'daemon': daemons.superwasp_ups,
     'table': 'weather_superwasp_ups',
+    'date_key': 'date',
     'columns':  ['ups1_status', 'ups1_battery_remaining', 'ups1_load', \
         'ups2_status', 'ups2_battery_remaining', 'ups2_load']
 }
@@ -134,12 +146,14 @@ SUPERWASP_UPS = {
 NETWORK = {
     'daemon': daemons.observatory_network_ping,
     'table': 'weather_network',
+    'date_key': 'date',
     'columns': ['ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway']
 }
 
 EUMETSAT_OPACITY = {
     'daemon': daemons.eumetsat_opacity,
     'table': 'weather_eumetsat_opacity',
+    'date_key': 'date',
     'columns': ['opacity']
 }
 
@@ -149,11 +163,11 @@ def __run_sensor_update(sensor):
         with sensor['daemon'].connect() as d:
             data = d.last_measurement()
 
-        # All sensors are assumed/required to contain a 'date' field for when the data was measured
-        date = datetime.datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%SZ')
-
-        # Temorary workaround for the NITES roomalert, which thinks it is 20 years in the future
-        if sensor == NITES_ROOMALERT:
+        if sensor['date_key']:
+            # Take date from the queried data
+            date = datetime.datetime.strptime(data[sensor['date_key']], '%Y-%m-%dT%H:%M:%SZ')
+        else:
+            # Fall back to current date
             date = datetime.datetime.utcnow()
 
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
