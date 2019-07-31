@@ -90,6 +90,16 @@ GOTO_ROOMALERT = {
         'roomalert_temp', 'roomalert_humidity']
 }
 
+GOTO_DOME2_INTERNAL = {
+    'daemon': daemons.rasa_internal_environment,
+    'table': 'weather_goto_dome2_internal',
+    'date_key': 'date',
+    'columns': [
+        'temperature', 'temperature_valid',
+        'relative_humidity', 'relative_humidity_valid',
+    ]
+}
+
 ONEMETRE_RAINDETECTOR = {
     'daemon': daemons.onemetre_rain,
     'table': 'weather_onemetre_raindetector',
@@ -171,6 +181,7 @@ ROBODIMM_SEEING = {
     'columns': ['seeing']
 }
 
+
 def __run_sensor_update(sensor):
     """Reads a sensor and updates the database"""
     try:
@@ -208,6 +219,7 @@ if __name__ == '__main__':
     __run_sensor_update(NITES_ROOMALERT)
     __run_sensor_update(GOTO_VAISALA)
     __run_sensor_update(GOTO_ROOMALERT)
+    __run_sensor_update(GOTO_DOME2_INTERNAL)
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(SUPERWASP_ROOFBATTERY)

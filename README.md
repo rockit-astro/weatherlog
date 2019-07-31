@@ -61,6 +61,17 @@ CREATE TABLE `weather_goto_roomalert` (
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE `weather_goto_dome2_internal` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `temperature` float NOT NULL,
+  `temperature_valid` tinyint(1) NOT NULL,
+  `relative_humidity` float NOT NULL,
+  `relative_humidity_valid` tinyint(1) NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `weather_goto_ups` (
   `bin` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
