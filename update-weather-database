@@ -199,6 +199,11 @@ def __run_sensor_update(sensor):
             # Fall back to current date
             date = datetime.datetime.utcnow()
 
+        # HACK: Work around missing NITES rack temperature/humidity sensor
+        if 'rack_temperature' in sensor['columns']:
+            data['rack_temperature'] = data['internal_temperature']
+            data['rack_humidity'] = data['internal_humidity']
+
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
                            - MEASUREMENT_BIN_OFFSET
 
