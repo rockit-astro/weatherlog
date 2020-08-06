@@ -1,12 +1,12 @@
 Name:      observatory-weather-database-updater
-Version:   2.5.2
+Version:   2.5.3
 Release:   0
 Url:       https://github.com/warwick-one-metre/weatherlogd
 Summary:   Weather logger for the Warwick one-metre telescope.
 License:   GPL-3.0
 Group:     Unspecified
 BuildArch: noarch
-Requires:  python36, python36-Pyro4, python36-PyMySQL, python36-warwick-observatory-common
+Requires:  python3, python3-Pyro4, python3-pymysql, python3-warwick-observatory-common
 Requires:  mariadb, mariadb-server, %{?systemd_requires}
 
 %description
