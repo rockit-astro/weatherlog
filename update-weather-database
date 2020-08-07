@@ -150,7 +150,7 @@ SUPERWASP_ROOFBATTERY = {
 }
 
 SUPERWASP_UPS = {
-    'daemon': daemons.superwasp_ups,
+    'daemon': daemons.superwasp_power,
     'table': 'weather_superwasp_ups',
     'date_key': 'date',
     'columns':  ['ups1_status', 'ups1_battery_remaining', 'ups1_load', \
