@@ -90,7 +90,8 @@ GOTO_ROOMALERT = {
     'daemon': daemons.goto_roomalert,
     'table': 'weather_goto_roomalert',
     'date_key': 'date',
-    'columns': ['internal_temp', 'internal_humidity', 'dome2_internal_temp', 'dome2_internal_humidity',
+    'columns': [
+        'internal_temp', 'internal_humidity', 'dome2_internal_temp', 'dome2_internal_humidity',
         'roomalert_temp', 'roomalert_humidity']
 }
 
@@ -203,6 +204,11 @@ def __run_sensor_update(sensor):
         if 'rack_temperature' in sensor['columns']:
             data['rack_temperature'] = data['internal_temperature']
             data['rack_humidity'] = data['internal_humidity']
+
+        # HACK: RASA dome sensor has moved to its own daemon
+        if sensor['table'] == 'weather_goto_roomalert':
+            data['dome2_internal_temp'] = 0
+            data['dome2_internal_humidity'] = 0
 
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
                            - MEASUREMENT_BIN_OFFSET
