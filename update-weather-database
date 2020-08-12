@@ -151,6 +151,14 @@ SUPERWASP_UPS = {
         'ups2_status', 'ups2_battery_remaining', 'ups2_load', 'roofbattery']
 }
 
+SUPERWASP_ROOMALERT = {
+    'daemon': daemons.superwasp_roomalert,
+    'table': 'weather_superwasp_roomalert',
+    'date_key': 'date',
+    'columns': ['comp_room_temp', 'comp_room_humidity', 'rack_temp', 'rack_humidity', 'cam_rack_temp', 'roomalert_temp', 'roomalert_humidity', \
+        'aircon_no_airflow', 'roof_closed', 'roof_power']
+}
+
 NETWORK = {
     'daemon': daemons.observatory_network_ping,
     'table': 'weather_network',
@@ -231,6 +239,7 @@ if __name__ == '__main__':
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
     __run_sensor_update(SUPERWASP_UPS)
+    __run_sensor_update(SUPERWASP_ROOMALERT)
     __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
     __run_sensor_update(EUMETSAT_OPACITY)

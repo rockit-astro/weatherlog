@@ -265,6 +265,24 @@ CREATE TABLE `weather_robodimm_seeing` (
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `weather_superwasp_roomalert` (
+  `bin` int(10) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `comp_room_temp` float NOT NULL,
+  `com_room_humidity` float NOT NULL,
+  `rack_temp` float NOT NULL,
+  `rack_humidity` float NOT NULL,
+  `cam_rack_temp` float NOT NULL,
+  `roomalert_temp` float NOT NULL,
+  `roomalert_humidity` float NOT NULL,
+  `aircon_no_airflow` tinyint(1) NOT NULL,
+  `roof_closed` tinyint(1) NOT NULL,
+  `roof_power` tinyint(1) NOT NULL,
+  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`bin`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 ```
 
 These statements may need to be copy/pasted across a few batches.  The `mariadb` client appears to have a bug where it corrupts long paste buffers.
