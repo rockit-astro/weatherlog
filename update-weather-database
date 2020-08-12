@@ -143,19 +143,12 @@ SUPERWASP = {
         'sky_temp', 'pressure', 'dew_point_delta']
 }
 
-SUPERWASP_ROOFBATTERY = {
-    'daemon': daemons.superwasp_roofbattery,
-    'table': 'weather_superwasp_roofbattery',
-    'date_key': 'date',
-    'columns': ['voltage']
-}
-
 SUPERWASP_UPS = {
     'daemon': daemons.superwasp_power,
     'table': 'weather_superwasp_ups',
     'date_key': 'date',
     'columns':  ['ups1_status', 'ups1_battery_remaining', 'ups1_load', \
-        'ups2_status', 'ups2_battery_remaining', 'ups2_load']
+        'ups2_status', 'ups2_battery_remaining', 'ups2_load', 'roofbattery']
 }
 
 NETWORK = {
@@ -237,7 +230,6 @@ if __name__ == '__main__':
     __run_sensor_update(GOTO_DOME2_INTERNAL)
     __run_sensor_update(GOTO_UPS)
     __run_sensor_update(SUPERWASP)
-    __run_sensor_update(SUPERWASP_ROOFBATTERY)
     __run_sensor_update(SUPERWASP_UPS)
     __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)

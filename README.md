@@ -104,6 +104,7 @@ CREATE TABLE `weather_superwasp_ups` (
   `ups2_status` tinyint(2) NOT NULL,
   `ups2_battery_remaining` tinyint(3) unsigned NOT NULL,
   `ups2_load` tinyint(3) unsigned NOT NULL,
+  `roofbattery` float NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -237,14 +238,6 @@ CREATE TABLE `weather_superwasp` (
   `sky_temp` float NOT NULL,
   `pressure` float NOT NULL,
   `dew_point_delta` float NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`bin`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `weather_superwasp_roofbattery` (
-  `bin` int(10) unsigned NOT NULL,
-  `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `voltage` float NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
