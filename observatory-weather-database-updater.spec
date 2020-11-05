@@ -10,7 +10,7 @@ Requires:  python3, python3-Pyro4, python3-pymysql, python3-warwick-observatory-
 Requires:  mariadb, mariadb-server, %{?systemd_requires}
 
 %description
-Part of the observatory software for the Warwick one-meter telescope.
+Part of the observatory software for the Warwick La Palma telescopes.
 
 update-weather-database polls the local sensors and updates the weather database.
 

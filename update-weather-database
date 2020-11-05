@@ -56,16 +56,20 @@ ONEMETRE_ROOMALERT = {
     'daemon': daemons.onemetre_roomalert,
     'table': 'weather_onemetre_roomalert',
     'date_key': 'date',
-    'columns': ['internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity', \
-        'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe']
+    'columns': [
+        'internal_temp', 'internal_humidity', 'roomalert_temp', 'roomalert_humidity',
+        'truss_temp', 'hatch_closed', 'trap_closed', 'security_system_safe'
+    ]
 }
 
 NITES_ROOMALERT = {
     'daemon': daemons.nites_roomalert,
     'table': 'weather_nites_roomalert',
     'date_key': None,
-    'columns': ['internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity', \
-        'security_system', 'mains_power']
+    'columns': [
+        'internal_temperature', 'internal_humidity', 'rack_temperature', 'rack_humidity',
+        'security_system', 'mains_power'
+    ]
 }
 
 GOTO_VAISALA = {
@@ -92,7 +96,8 @@ GOTO_ROOMALERT = {
     'date_key': 'date',
     'columns': [
         'internal_temp', 'internal_humidity', 'dome2_internal_temp', 'dome2_internal_humidity',
-        'roomalert_temp', 'roomalert_humidity']
+        'roomalert_temp', 'roomalert_humidity'
+    ]
 }
 
 GOTO_DOME2_INTERNAL = {
@@ -109,82 +114,106 @@ ONEMETRE_RAINDETECTOR = {
     'daemon': daemons.onemetre_rain,
     'table': 'weather_onemetre_raindetector',
     'date_key': 'date',
-    'columns':  ['unsafe_boards', 'total_boards', 'port1']
+    'columns': [
+        'unsafe_boards', 'total_boards', 'port1'
+    ]
 }
 
 ONEMETRE_UPS = {
     'daemon': daemons.onemetre_power,
     'table': 'weather_onemetre_ups',
     'date_key': 'date',
-    'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
-        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
+    'columns': [
+        'main_ups_status', 'main_ups_battery_remaining', 'main_ups_load',
+        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load'
+    ]
 }
 
 GOTO_UPS = {
     'daemon': daemons.goto_ups,
     'table': 'weather_goto_ups',
     'date_key': 'date',
-    'columns':  ['main_ups_status', 'main_ups_battery_remaining', 'main_ups_load', \
-        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load']
+    'columns': [
+        'main_ups_status', 'main_ups_battery_remaining', 'main_ups_load',
+        'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load'
+    ]
 }
 
 RASA_UPS = {
     'daemon': daemons.rasa_power,
     'table': 'weather_rasa_ups',
     'date_key': 'date',
-    'columns':  ['ups_status', 'ups_battery_remaining', 'ups_load']
+    'columns': [
+        'ups_status', 'ups_battery_remaining', 'ups_load'
+    ]
 }
 
 SUPERWASP = {
     'daemon': daemons.superwasp_log,
     'table': 'weather_superwasp',
     'date_key': 'date',
-    'columns': ['ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction', \
-        'sky_temp', 'pressure', 'dew_point_delta']
+    'columns': [
+        'ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction',
+        'sky_temp', 'pressure', 'dew_point_delta'
+    ]
 }
 
 SUPERWASP_UPS = {
     'daemon': daemons.superwasp_power,
     'table': 'weather_superwasp_ups',
     'date_key': 'date',
-    'columns':  ['ups1_status', 'ups1_battery_remaining', 'ups1_load', \
-        'ups2_status', 'ups2_battery_remaining', 'ups2_load', 'roofbattery']
+    'columns': [
+        'ups1_status', 'ups1_battery_remaining', 'ups1_load',
+        'ups2_status', 'ups2_battery_remaining', 'ups2_load',
+        'roofbattery'
+    ]
 }
 
 SUPERWASP_ROOMALERT = {
     'daemon': daemons.superwasp_roomalert,
     'table': 'weather_superwasp_roomalert',
     'date_key': 'date',
-    'columns': ['comp_room_temp', 'comp_room_humidity', 'rack_temp', 'rack_humidity', 'cam_rack_temp', 'roomalert_temp', 'roomalert_humidity', \
-        'aircon_no_airflow', 'roof_closed', 'roof_power']
+    'columns': [
+        'comp_room_temp', 'comp_room_humidity', 'rack_temp', 'rack_humidity',
+        'cam_rack_temp', 'roomalert_temp', 'roomalert_humidity', 'aircon_no_airflow',
+        'roof_closed', 'roof_power'
+    ]
 }
 
 NETWORK = {
     'daemon': daemons.observatory_network_ping,
     'table': 'weather_network',
     'date_key': 'date',
-    'columns': ['ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway']
+    'columns': [
+        'ngtshead', 'google', 'onemetre', 'goto', 'nites', 'swasp', 'swasp_gateway'
+    ]
 }
 
 EUMETSAT_OPACITY = {
     'daemon': daemons.eumetsat_opacity,
     'table': 'weather_eumetsat_opacity',
     'date_key': 'date',
-    'columns': ['opacity']
+    'columns': [
+        'opacity'
+    ]
 }
 
 TNG_SEEING = {
     'daemon': daemons.tng_log,
     'table': 'weather_tng_seeing',
     'date_key': 'seeing_date',
-    'columns': ['seeing']
+    'columns': [
+        'seeing'
+    ]
 }
 
 ROBODIMM_SEEING = {
     'daemon': daemons.ing_robodimm,
     'table': 'weather_robodimm_seeing',
     'date_key': 'seeing_date',
-    'columns': ['seeing']
+    'columns': [
+        'seeing'
+    ]
 }
 
 
@@ -225,6 +254,7 @@ def __run_sensor_update(sensor):
             cur.execute(insert)
     except Exception as e:
         print('Failed to update ' + sensor['table'] + ' with error: ' + str(e))
+
 
 if __name__ == '__main__':
     db = pymysql.connect(db=DATABASE_DB, user=DATABASE_USER, autocommit=True)

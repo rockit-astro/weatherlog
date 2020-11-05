@@ -270,7 +270,7 @@ CREATE TABLE `weather_superwasp_roomalert` (
   `bin` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `comp_room_temp` float NOT NULL,
-  `com_room_humidity` float NOT NULL,
+  `comp_room_humidity` float NOT NULL,
   `rack_temp` float NOT NULL,
   `rack_humidity` float NOT NULL,
   `cam_rack_temp` float NOT NULL,
