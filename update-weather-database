@@ -174,9 +174,11 @@ SUPERWASP_ROOMALERT = {
     'table': 'weather_superwasp_roomalert',
     'date_key': 'date',
     'columns': [
-        'comp_room_temp', 'comp_room_humidity', 'rack_temp', 'rack_humidity',
-        'cam_rack_temp', 'roomalert_temp', 'roomalert_humidity', 'aircon_no_airflow',
-        'roof_closed', 'roof_power'
+        'comp_room_temp', 'comp_room_humidity',
+        'cam_room_temp', 'cam_room_humidity',
+        'cam_rack_temp',
+        'roomalert_temp', 'roomalert_humidity',
+        'aircon_no_airflow', 'roof_closed', 'roof_power'
     ]
 }
 
