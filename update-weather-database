@@ -165,6 +165,7 @@ SUPERWASP_UPS = {
     'columns': [
         'ups1_status', 'ups1_battery_remaining', 'ups1_load',
         'ups2_status', 'ups2_battery_remaining', 'ups2_load',
+        'ups3_status', 'ups3_battery_remaining', 'ups3_load',
         'roofbattery'
     ]
 }

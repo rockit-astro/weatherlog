@@ -104,6 +104,9 @@ CREATE TABLE `weather_superwasp_ups` (
   `ups2_status` tinyint(2) NOT NULL,
   `ups2_battery_remaining` tinyint(3) unsigned NOT NULL,
   `ups2_load` tinyint(3) unsigned NOT NULL,
+  `ups3_status` tinyint(2) NOT NULL,
+  `ups3_battery_remaining` tinyint(3) unsigned NOT NULL,
+  `ups3_load` tinyint(3) unsigned NOT NULL,
   `roofbattery` float NOT NULL,
   `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`bin`)
