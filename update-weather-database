@@ -252,6 +252,11 @@ def __run_sensor_update(sensor):
             data['dome2_internal_temp'] = 0
             data['dome2_internal_humidity'] = 0
 
+        # HACK: Domealert doesn't have an internal probe
+        if sensor['table'] == 'weather_onemetre_roomalert':
+            data['roomalert_temp'] = 0
+            data['roomalert_humidity'] = 0
+
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
                            - MEASUREMENT_BIN_OFFSET
 
