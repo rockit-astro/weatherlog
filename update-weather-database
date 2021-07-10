@@ -63,7 +63,7 @@ ONEMETRE_ROOMALERT = {
 }
 
 NITES_ROOMALERT = {
-    'daemon': daemons.nites_roomalert,
+    'daemon': daemons.clasp_roomalert,
     'table': 'weather_nites_roomalert',
     'date_key': None,
     'columns': [
@@ -90,8 +90,8 @@ GOTO_VAISALA = {
     ]
 }
 
-GOTO_ROOMALERT = {
-    'daemon': daemons.goto_roomalert,
+GOTO_DOME1_ROOMALERT = {
+    'daemon': daemons.goto_dome1_roomalert,
     'table': 'weather_goto_roomalert',
     'date_key': 'date',
     'columns': [
@@ -101,7 +101,7 @@ GOTO_ROOMALERT = {
 }
 
 GOTO_DOME2_INTERNAL = {
-    'daemon': daemons.rasa_internal_environment,
+    'daemon': daemons.goto_dome2_sht35,
     'table': 'weather_goto_dome2_internal',
     'date_key': 'date',
     'columns': [
@@ -129,32 +129,13 @@ ONEMETRE_UPS = {
     ]
 }
 
-GOTO_UPS = {
+GOTO_DOME1_UPS = {
     'daemon': daemons.goto_ups,
     'table': 'weather_goto_ups',
     'date_key': 'date',
     'columns': [
         'main_ups_status', 'main_ups_battery_remaining', 'main_ups_load',
         'dome_ups_status', 'dome_ups_battery_remaining', 'dome_ups_load'
-    ]
-}
-
-RASA_UPS = {
-    'daemon': daemons.rasa_power,
-    'table': 'weather_rasa_ups',
-    'date_key': 'date',
-    'columns': [
-        'ups_status', 'ups_battery_remaining', 'ups_load'
-    ]
-}
-
-SUPERWASP = {
-    'daemon': daemons.superwasp_log,
-    'table': 'weather_superwasp',
-    'date_key': 'date',
-    'columns': [
-        'ext_temperature', 'ext_humidity', 'wind_speed', 'wind_direction',
-        'sky_temp', 'pressure', 'dew_point_delta'
     ]
 }
 
@@ -243,9 +224,10 @@ def __run_sensor_update(sensor):
             date = datetime.datetime.utcnow()
 
         # HACK: Work around missing NITES rack temperature/humidity sensor
-        if 'rack_temperature' in sensor['columns']:
+        if sensor['table'] == 'weather_nites_roomalert':
             data['rack_temperature'] = data['internal_temperature']
             data['rack_humidity'] = data['internal_humidity']
+            data['security_system'] = 0
 
         # HACK: RASA dome sensor has moved to its own daemon
         if sensor['table'] == 'weather_goto_roomalert':
@@ -256,6 +238,14 @@ def __run_sensor_update(sensor):
         if sensor['table'] == 'weather_onemetre_roomalert':
             data['roomalert_temp'] = 0
             data['roomalert_humidity'] = 0
+
+        if sensor['table'] == 'weather_goto_ups':
+            data['main_ups_status'] = data['dome1_upper_ups_status']
+            data['main_ups_battery_remaining'] = data['dome1_upper_ups_battery_remaining']
+            data['main_ups_load'] = data['dome1_upper_ups_load']
+            data['dome_ups_status'] = data['dome2_upper_ups_status']
+            data['dome_ups_battery_remaining'] = data['dome2_upper_ups_battery_remaining']
+            data['dome_ups_load'] = data['dome2_upper_ups_load']
 
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
                            - MEASUREMENT_BIN_OFFSET
@@ -281,14 +271,12 @@ if __name__ == '__main__':
     __run_sensor_update(ONEMETRE_UPS)
     __run_sensor_update(NITES_ROOMALERT)
     __run_sensor_update(GOTO_VAISALA)
-    __run_sensor_update(GOTO_ROOMALERT)
+    __run_sensor_update(GOTO_DOME1_ROOMALERT)
     __run_sensor_update(GOTO_DOME2_INTERNAL)
-    __run_sensor_update(GOTO_UPS)
-    __run_sensor_update(SUPERWASP)
+    __run_sensor_update(GOTO_DOME1_UPS)
     __run_sensor_update(SUPERWASP_UPS)
     __run_sensor_update(SUPERWASP_ROOMALERT)
     __run_sensor_update(SUPERWASP_AURORA)
-    __run_sensor_update(RASA_UPS)
     __run_sensor_update(NETWORK)
     __run_sensor_update(EUMETSAT_OPACITY)
     __run_sensor_update(TNG_SEEING)
