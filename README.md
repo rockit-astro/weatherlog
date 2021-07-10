@@ -1,11 +1,9 @@
-## La Palma weather database updater [![Travis CI build status](https://travis-ci.org/warwick-one-metre/weatherlogd.svg?branch=master)](https://travis-ci.org/warwick-one-metre/weatherlogd)
-
-Part of the observatory software for the Warwick La Palma telescopes.
+## La Palma weather database updater
 
 `update-weather-database` is a command that queries the observatory environment sensors and updates the weather database for use by the [web dashboard](https://github.com/warwick-one-metre/dashboard).
 It is installed as a timed system service that runs every 30 seconds.
 
-See [Software Infrastructure](https://github.com/warwick-one-metre/docs/wiki/Software-Infrastructure) for an overview of the W1m software architecture and instructions for developing and deploying the code.
+See [Software Infrastructure](https://github.com/warwick-one-metre/docs/wiki/Software-Infrastructure) for an overview of the software architecture and instructions for developing and deploying the code.
 
 ### Software Setup
 
