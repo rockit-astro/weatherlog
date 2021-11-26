@@ -239,6 +239,12 @@ def __run_sensor_update(sensor):
             data['roomalert_temp'] = 0
             data['roomalert_humidity'] = 0
 
+        # HACK: UPS3 has been removed
+        if sensor['table'] == 'weather_superwasp_ups':
+            data['ups3_status'] = 1
+            data['ups3_battery_remaining'] = 0
+            data['ups3_load'] = 0
+
         if sensor['table'] == 'weather_goto_ups':
             data['main_ups_status'] = data['dome1_upper_ups_status']
             data['main_ups_battery_remaining'] = data['dome1_upper_ups_battery_remaining']
