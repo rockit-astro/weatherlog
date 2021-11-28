@@ -245,6 +245,12 @@ def __run_sensor_update(sensor):
             data['ups3_battery_remaining'] = 0
             data['ups3_load'] = 0
 
+        # HACK: dome ups has been removed
+        if sensor['table'] == 'weather_onemetre_ups':
+            data['dome_ups_status'] = 1
+            data['dome_ups_battery_remaining'] = 0
+            data['dome_ups_load'] = 0
+
         if sensor['table'] == 'weather_goto_ups':
             data['main_ups_status'] = data['dome1_upper_ups_status']
             data['main_ups_battery_remaining'] = data['dome1_upper_ups_battery_remaining']

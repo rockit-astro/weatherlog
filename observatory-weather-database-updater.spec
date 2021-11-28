@@ -1,5 +1,5 @@
 Name:      observatory-weather-database-updater
-Version:   20211126
+Version:   20211128
 Release:   0
 Url:       https://github.com/warwick-one-metre/weatherlogd
 Summary:   Weather logger for the Warwick La Palma telescopes.
