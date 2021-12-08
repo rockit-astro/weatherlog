@@ -100,13 +100,14 @@ GOTO_DOME1_ROOMALERT = {
     ]
 }
 
-GOTO_DOME2_INTERNAL = {
-    'daemon': daemons.goto_dome2_sht35,
-    'table': 'weather_goto_dome2_internal',
+GOTO_DOME2_ROOMALERT = {
+    'daemon': daemons.goto_dome2_roomalert,
+    'table': 'weather_goto_dome2_roomalert',
     'date_key': 'date',
     'columns': [
-        'temperature', 'temperature_valid',
-        'relative_humidity', 'relative_humidity_valid',
+        'internal_temp', 'internal_humidity',
+        'roomalert_temp', 'roomalert_humidity',
+        'hatch_closed'
     ]
 }
 
@@ -284,7 +285,7 @@ if __name__ == '__main__':
     __run_sensor_update(NITES_ROOMALERT)
     __run_sensor_update(GOTO_VAISALA)
     __run_sensor_update(GOTO_DOME1_ROOMALERT)
-    __run_sensor_update(GOTO_DOME2_INTERNAL)
+    __run_sensor_update(GOTO_DOME2_ROOMALERT)
     __run_sensor_update(GOTO_DOME1_UPS)
     __run_sensor_update(SUPERWASP_UPS)
     __run_sensor_update(SUPERWASP_ROOMALERT)
