@@ -270,6 +270,9 @@ def __run_sensor_update(sensor):
             data['dome_ups_battery_remaining'] = data['dome2_upper_ups_battery_remaining']
             data['dome_ups_load'] = data['dome2_upper_ups_load']
 
+        if sensor['table'] == 'weather_network':
+            data['nites'] = data['clasp']
+
         measurement_bin = int(time.mktime(date.timetuple()) / MEASUREMENT_BIN_SIZE) \
                            - MEASUREMENT_BIN_OFFSET
 
