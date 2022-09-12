@@ -53,7 +53,7 @@ ONEMETRE_VAISALA = {
 }
 
 ONEMETRE_ROOMALERT = {
-    'daemon': daemons.onemetre_roomalert,
+    'daemon': daemons.onemetre_domealert,
     'table': 'weather_onemetre_roomalert',
     'date_key': 'date',
     'columns': [
@@ -63,7 +63,7 @@ ONEMETRE_ROOMALERT = {
 }
 
 NITES_ROOMALERT = {
-    'daemon': daemons.clasp_roomalert,
+    'daemon': daemons.clasp_domealert,
     'table': 'weather_nites_roomalert',
     'date_key': None,
     'columns': [
@@ -91,7 +91,7 @@ GOTO_VAISALA = {
 }
 
 GOTO_DOME1_ROOMALERT = {
-    'daemon': daemons.goto_dome1_roomalert,
+    'daemon': daemons.goto_dome1_domealert,
     'table': 'weather_goto_roomalert',
     'date_key': 'date',
     'columns': [
@@ -101,7 +101,7 @@ GOTO_DOME1_ROOMALERT = {
 }
 
 GOTO_DOME2_ROOMALERT = {
-    'daemon': daemons.goto_dome2_roomalert,
+    'daemon': daemons.goto_dome2_domealert,
     'table': 'weather_goto_dome2_roomalert',
     'date_key': 'date',
     'columns': [
@@ -229,11 +229,18 @@ def __run_sensor_update(sensor):
             data['rack_temperature'] = data['internal_temperature']
             data['rack_humidity'] = data['internal_humidity']
             data['security_system'] = 0
+            data['mains_power'] = 0
 
         # HACK: RASA dome sensor has moved to its own daemon
         if sensor['table'] == 'weather_goto_roomalert':
             data['dome2_internal_temp'] = 0
             data['dome2_internal_humidity'] = 0
+            data['roomalert_temp'] = 0
+            data['roomalert_humidity'] = 0
+
+        if sensor['table'] == 'weather_goto_dome2_roomalert':
+            data['roomalert_temp'] = 0
+            data['roomalert_humidity'] = 0
 
         # HACK: Domealert doesn't have an internal probe
         if sensor['table'] == 'weather_onemetre_roomalert':
@@ -245,12 +252,15 @@ def __run_sensor_update(sensor):
             data['ups3_status'] = 1
             data['ups3_battery_remaining'] = 0
             data['ups3_load'] = 0
+            data['roofbattery'] = data['battery_voltage_mean']
 
-        # HACK: dome ups has been removed
         if sensor['table'] == 'weather_onemetre_ups':
-            data['dome_ups_status'] = 1
-            data['dome_ups_battery_remaining'] = 0
-            data['dome_ups_load'] = 0
+            data['dome_ups_status'] = data['ups2_status']
+            data['dome_ups_battery_remaining'] = data['ups2_battery_remaining']
+            data['dome_ups_load'] = data['ups2_load']
+            data['main_ups_status'] = data['ups1_status']
+            data['main_ups_battery_remaining'] = data['ups1_battery_remaining']
+            data['main_ups_load'] = data['ups1_load']
 
         if sensor['table'] == 'weather_goto_ups':
             data['main_ups_status'] = data['dome1_upper_ups_status']
