@@ -1,0 +1,315 @@
+{
+  "log_name": "weatherlogd",
+  "database": {
+    "type": "mysql",
+    "host": "localhost",
+    "db": "ops",
+    "user": "ops"
+  },
+  "dashboard": {
+    "output_root": "/srv/dashboard/generated/environment/",
+    "start_date": "2023-01-01",
+    "latest_range": 21600,
+    "start_hour": 12,
+    "types": [
+      "external_temperature", "external_humidity", "internal_temperature", "internal_humidity", "external_dewpt",
+      "skytemp", "brightness", "rain", "vaisala_rain", "seeing"
+    ],
+    "wind_types": [
+      {
+        "scatter_type": "wind",
+        "speed_type": "wind_speed",
+        "speed_sensor": "onemetre_wind_speed",
+        "direction_sensor": "onemetre_wind_direction",
+        "gust_sensor": "onemetre_wind_gust",
+        "lull_sensor": "onemetre_wind_lull"
+      },
+      {
+        "scatter_type": "wind",
+        "speed_type": "wind_speed",
+        "speed_sensor": "goto_wind_speed",
+        "direction_sensor": "goto_wind_direction",
+        "gust_sensor": "goto_wind_gust",
+        "lull_sensor": "goto_wind_lull"
+      },
+      {
+        "scatter_type": "wind",
+        "speed_type": "wind_speed",
+        "speed_sensor": "halfmetre_wind_speed",
+        "direction_sensor": "halfmetre_wind_direction",
+        "gust_sensor": "halfmetre_wind_gust",
+        "lull_sensor": "halfmetre_wind_lull"
+      }
+    ]
+  },
+  "bin_epoch": 4838688,
+  "bin_length": 300,
+  "watchers": {
+    "onemetre_vaisala" : {
+      "daemon": "onemetre_vaisala",
+      "method": "last_measurement",
+      "fields": {
+        "temperature": {
+          "sensor": "onemetre_external_temperature",
+          "filter_invalid": true
+        },
+        "relative_humidity": {
+          "sensor": "onemetre_external_humidity",
+          "filter_invalid": true
+        },
+        "wind_speed": {
+          "sensor": "onemetre_wind_speed",
+          "filter_invalid": true
+        },
+        "wind_direction": {
+          "sensor": "onemetre_wind_direction",
+          "filter_invalid": true
+        },
+        "wind_gust": {
+          "sensor": "onemetre_wind_gust",
+          "filter_invalid": true
+        },
+        "wind_lull": {
+          "sensor": "onemetre_wind_lull",
+          "filter_invalid": true
+        },
+        "pressure": {
+          "sensor": "onemetre_pressure",
+          "filter_invalid": true
+        },
+        "accumulated_rain": {
+          "sensor": "onemetre_accumulated_rain",
+          "filter_invalid": true
+        },
+        "rain_intensity": {
+          "sensor": "onemetre_rain_intensity",
+          "filter_invalid": true
+        },
+        "dew_point_delta": {
+          "sensor": "onemetre_external_dew_point_delta",
+          "filter_invalid": true
+        }
+      }
+    },
+    "onemetre_rain" : {
+      "daemon": "onemetre_rain",
+      "method": "last_measurement",
+      "fields": {
+        "unsafe_boards": {
+          "sensor": "onemetre_rain_unsafe"
+        }
+      }
+    },
+    "goto_vaisala" : {
+      "daemon": "goto_vaisala",
+      "method": "last_measurement",
+      "fields": {
+        "temperature": {
+          "sensor": "goto_external_temperature",
+          "filter_invalid": true
+        },
+        "relative_humidity": {
+          "sensor": "goto_external_humidity",
+          "filter_invalid": true
+        },
+        "wind_speed": {
+          "sensor": "goto_wind_speed",
+          "filter_invalid": true
+        },
+        "wind_direction": {
+          "sensor": "goto_wind_direction",
+          "filter_invalid": true
+        },
+        "wind_gust": {
+          "sensor": "goto_wind_gust",
+          "filter_invalid": true
+        },
+        "wind_lull": {
+          "sensor": "goto_wind_lull",
+          "filter_invalid": true
+        },
+        "pressure": {
+          "sensor": "goto_pressure",
+          "filter_invalid": true
+        },
+        "accumulated_rain": {
+          "sensor": "goto_accumulated_rain",
+          "filter_invalid": true
+        },
+        "rain_intensity": {
+          "sensor": "goto_rain_intensity",
+          "filter_invalid": true
+        },
+        "dew_point_delta": {
+          "sensor": "goto_external_dew_point_delta",
+          "filter_invalid": true
+        }
+      }
+    },
+     "halfmetre_vaisala" : {
+      "daemon": "halfmetre_vaisala",
+      "method": "last_measurement",
+      "fields": {
+        "temperature": {
+          "sensor": "halfmetre_external_temperature",
+          "filter_invalid": true
+        },
+        "relative_humidity": {
+          "sensor": "halfmetre_external_humidity",
+          "filter_invalid": true
+        },
+        "wind_speed": {
+          "sensor": "halfmetre_wind_speed",
+          "filter_invalid": true
+        },
+        "wind_direction": {
+          "sensor": "halfmetre_wind_direction",
+          "filter_invalid": true
+        },
+        "wind_gust": {
+          "sensor": "halfmetre_wind_gust",
+          "filter_invalid": true
+        },
+        "wind_lull": {
+          "sensor": "halfmetre_wind_lull",
+          "filter_invalid": true
+        },
+        "pressure": {
+          "sensor": "halfmetre_pressure",
+          "filter_invalid": true
+        },
+        "accumulated_rain": {
+          "sensor": "halfmetre_accumulated_rain",
+          "filter_invalid": true
+        },
+        "rain_intensity": {
+          "sensor": "halfmetre_rain_intensity",
+          "filter_invalid": true
+        },
+        "dew_point_delta": {
+          "sensor": "halfmetre_external_dew_point_delta",
+          "filter_invalid": true
+        },
+        "rg11_unsafe": {
+          "sensor": "halfmetre_rain_unsafe",
+          "filter_invalid": true
+        }
+      }
+    },
+    "cloudwatcher": {
+      "daemon": "halfmetre_cloudwatcher",
+      "method": "last_measurement",
+      "fields": {
+        "sky_raw": {
+          "sensor": "raw_sky_temperature"
+        },
+        "ambient_raw": {
+          "sensor": "raw_sky_ambient"
+        },
+        "brightness_raw": {
+          "sensor": "sky_brightness"
+        },
+        "sky_temp": {
+          "sensor": "sky_temperature"
+        }
+      }
+    },
+    "onemetre_domealert" : {
+      "daemon": "onemetre_domealert",
+      "method": "last_measurement",
+      "fields": {
+        "internal_temp": {
+          "sensor": "onemetre_internal_temperature",
+          "filter_invalid": true
+        },
+        "internal_humidity": {
+          "sensor": "onemetre_internal_humidity",
+          "filter_invalid": true
+        }
+      }
+    },
+    "clasp_domealert" : {
+      "daemon": "clasp_domealert",
+      "method": "last_measurement",
+      "fields": {
+        "internal_temperature": {
+          "sensor": "clasp_internal_temperature",
+          "filter_invalid": true
+        },
+        "internal_humidity": {
+          "sensor": "clasp_internal_humidity",
+          "filter_invalid": true
+        },
+        "superwasp_temperature": {
+          "sensor": "superwasp_internal_temperature",
+          "filter_invalid": true
+        },
+        "superwasp_humidity": {
+          "sensor": "superwasp_internal_humidity",
+          "filter_invalid": true
+        }
+      }
+    },
+    "goto1_domealert" : {
+      "daemon": "goto_dome1_domealert",
+      "method": "last_measurement",
+      "fields": {
+        "internal_temp": {
+          "sensor": "goto1_internal_temperature",
+          "filter_invalid": true
+        },
+        "internal_humidity": {
+          "sensor": "goto1_internal_humidity",
+          "filter_invalid": true
+        }
+      }
+    },
+    "goto2_domealert" : {
+      "daemon": "goto_dome2_domealert",
+      "method": "last_measurement",
+      "fields": {
+        "internal_temp": {
+          "sensor": "goto2_internal_temperature",
+          "filter_invalid": true
+        },
+        "internal_humidity": {
+          "sensor": "goto2_internal_humidity",
+          "filter_invalid": true
+        }
+      }
+    },
+    "halfmetre_domealert" : {
+      "daemon": "halfmetre_domealert",
+      "method": "last_measurement",
+      "fields": {
+        "comp_room_temp": {
+          "sensor": "halfmetre_internal_temperature",
+          "filter_invalid": true
+        },
+        "comp_room_humidity": {
+          "sensor": "halfmetre_internal_humidity",
+          "filter_invalid": true
+        },
+        "tel_room_temp": {
+          "sensor": "comproom_internal_temperature",
+          "filter_invalid": true
+        },
+        "tel_room_humidity": {
+          "sensor": "comproom_internal_humidity",
+          "filter_invalid": true
+        }
+      }
+    },
+    "tng" : {
+      "daemon": "tng_log",
+      "method": "last_measurement",
+      "fields": {
+        "seeing": {
+          "sensor": "tng_seeing",
+          "date_field": "seeing_date",
+          "filter_invalid": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "log_name": "weatherlogd",
+  "database": {
+    "type": "sqlite",
+    "path": "/var/www/dashboard/generated/weather.db"
+  },
+  "dashboard": {
+    "output_root": "/var/www/dashboard/generated/weather/",
+    "start_date": "2023-07-11",
+    "latest_range": 21600,
+    "start_hour": 12,
+    "types": ["temperature", "humidity", "dewpt", "skytemp", "brightness", "rain"],
+    "wind_types": [
+      {
+        "scatter_type": "wind",
+        "speed_type": "wind_speed",
+        "speed_sensor": "wind_speed",
+        "direction_sensor": "wind_direction",
+        "gust_sensor": "wind_gust",
+        "lull_sensor": "wind_lull"
+      }
+    ]
+  },
+  "bin_epoch": 4838688,
+  "bin_length": 300,
+  "watchers": {
+    "vaisala": {
+      "daemon": "warwick_vaisala",
+      "method": "last_measurement",
+      "fields": {
+        "temperature": {
+          "sensor": "external_temperature",
+          "filter_invalid": true
+        },
+        "relative_humidity": {
+          "sensor": "external_humidity",
+          "filter_invalid": true
+        },
+        "wind_speed": {
+          "sensor": "wind_speed",
+          "filter_invalid": true
+        },
+        "wind_direction": {
+          "sensor": "wind_direction",
+          "filter_invalid": true
+        },
+        "wind_gust": {
+          "sensor": "wind_gust",
+          "filter_invalid": true
+        },
+        "wind_lull": {
+          "sensor": "wind_lull",
+          "filter_invalid": true
+        },
+        "pressure": {
+          "sensor": "pressure",
+          "filter_invalid": true
+        },
+        "accumulated_rain": {
+          "sensor": "accumulated_rain",
+          "filter_invalid": true
+        },
+        "rain_intensity": {
+          "sensor": "rain_intensity",
+          "filter_invalid": true
+        },
+        "dew_point_delta": {
+          "sensor": "dew_point_delta",
+          "filter_invalid": true
+        }
+      }
+    },
+    "rg11": {
+      "daemon": "warwick_rain",
+      "method": "last_measurement",
+      "fields": {
+        "unsafe_sensors": {
+          "sensor": "rg11_unsafe"
+        }
+      }
+    },
+    "rhusb": {
+      "daemon": "warwick_rhusb",
+      "method": "last_measurement",
+      "fields": {
+        "temperature": {
+          "sensor": "internal_temperature"
+        },
+        "humidity": {
+          "sensor": "internal_humidity"
+        }
+      }
+    },
+    "cloudwatcher": {
+      "daemon": "warwick_cloudwatcher",
+      "method": "last_measurement",
+      "fields": {
+        "sky_raw": {
+          "sensor": "raw_sky_temperature"
+        },
+        "ambient_raw": {
+          "sensor": "raw_sky_ambient"
+        },
+        "brightness_raw": {
+          "sensor": "sky_brightness"
+        },
+        "sky_temp": {
+          "sensor": "sky_temperature"
+        }
+      }
+    }
+  }
+}
