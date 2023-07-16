@@ -1,0 +1,136 @@
+{
+  "log_name": "weatherlogd",
+  "database": {
+    "type": "mysql",
+    "host": "localhost",
+    "db": "ops",
+    "user": "ops"
+  },
+  "dashboard": {
+    "output_root": "/srv/dashboard/generated/infrastructure/",
+    "start_date": "2016-09-14",
+    "latest_range": 21600,
+    "start_hour": 12,
+    "types": [
+      "ups_battery", "ups_load", "roof_battery", "internal_ping", "external_ping"
+    ]
+  },
+  "bin_epoch": 4838688,
+  "bin_length": 300,
+  "watchers": {
+    "onemetre_power": {
+      "daemon": "onemetre_power",
+      "method": "last_measurement",
+      "fields": {
+        "ups1_battery_remaining": {
+          "sensor": "onemetre_ups1_battery"
+        },
+        "ups1_load": {
+          "sensor": "onemetre_ups1_load"
+        },
+        "ups2_battery_remaining": {
+          "sensor": "onemetre_ups2_battery"
+        },
+        "ups2_load": {
+          "sensor": "onemetre_ups2_load"
+        }
+      }
+    },
+    "clasp_power" :{
+      "daemon": "clasp_power",
+      "method": "last_measurement",
+      "fields": {
+        "ups1_battery_remaining": {
+          "sensor": "clasp_ups1_battery"
+        },
+        "ups1_load": {
+          "sensor": "clasp_ups1_load"
+        },
+        "ups2_battery_remaining": {
+          "sensor": "clasp_ups2_battery"
+        },
+        "ups2_load": {
+          "sensor": "clasp_ups2_load"
+        }
+      }
+    },
+    "goto_ups" :{
+      "daemon": "goto_ups",
+      "method": "last_measurement",
+      "fields": {
+        "dome1_upper_ups_battery_remaining": {
+          "sensor": "goto1_ups1_battery"
+        },
+        "dome1_upper_ups_load": {
+          "sensor": "goto1_ups1_load"
+        },
+        "dome1_lower_ups_battery_remaining": {
+          "sensor": "goto1_ups2_battery"
+        },
+        "dome1_lower_ups_load": {
+          "sensor": "goto1_ups2_load"
+        },
+        "dome2_upper_ups_battery_remaining": {
+          "sensor": "goto2_ups1_battery"
+        },
+        "dome2_upper_ups_load": {
+          "sensor": "goto2_ups1_load"
+        },
+        "dome2_lower_ups_battery_remaining": {
+          "sensor": "goto2_ups2_battery"
+        },
+        "dome2_lower_ups_load": {
+          "sensor": "goto2_ups2_load"
+        }
+      }
+    },
+    "halfmetre_power" :{
+      "daemon": "halfmetre_power",
+      "method": "last_measurement",
+      "fields": {
+        "ups1_battery_remaining": {
+          "sensor": "halfmetre_ups1_battery"
+        },
+        "ups1_load": {
+          "sensor": "halfmetre_ups1_load"
+        },
+        "ups2_battery_remaining": {
+          "sensor": "halfmetre_ups2_battery"
+        },
+        "ups2_load": {
+          "sensor": "halfmetre_ups2_load"
+        },
+        "battery_voltage_mean": {
+          "sensor": "halfmetre_roof_voltage"
+        }
+      }
+    },
+    "netping" :{
+      "daemon": "observatory_network_ping",
+      "method": "last_measurement",
+      "fields": {
+        "ngtshead": {
+          "sensor": "ping_ngtshead"
+        },
+        "google": {
+          "sensor": "ping_google"
+        },
+        "onemetre": {
+          "sensor": "ping_onemetre"
+        },
+        "goto": {
+          "sensor": "ping_goto1"
+        },
+        "clasp": {
+          "sensor": "ping_clasp"
+        },
+        "swasp": {
+          "sensor": "ping_superwasp"
+        },
+        "swasp_gateway": {
+          "sensor": "ping_wht"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,272 @@
+#!/usr/bin/env python3
+#
+# This file is part of the Robotic Observatory Control Kit (rockit)
+#
+# rockit is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# rockit is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with rockit.  If not, see <http://www.gnu.org/licenses/>.
+
+import argparse
+import glob
+import gzip
+import json
+import math
+import os
+import shutil
+import sys
+from astropy.time import Time
+import astropy.units as u
+from rockit.weatherlog import Config
+
+
+def generate_json(config, db, start, end, output_path):
+    plot_data = {}
+    bin_start = int(start.unix / config.bin_length) - config.bin_epoch
+    bin_end = int(end.unix / config.bin_length) - config.bin_epoch
+    for plot_type in config.dashboard['types']:
+        sensors = {}
+        if config.database['type'] == 'mysql':
+            with db.cursor() as cur:
+                cur.execute('SELECT id, name, label, color FROM weather_sensors WHERE type = %s', [plot_type])
+                rows = cur.fetchall()
+        else:  # sqlite
+            with db:
+                rows = db.execute('SELECT id, name, label, color FROM weather_sensors WHERE type = ?',
+                                  [plot_type]).fetchall()
+
+        for sensor_id, sensor_name, sensor_label, sensor_color in rows:
+            sensor_data = []
+            sensor_min = None
+            sensor_max = None
+            if config.database['type'] == 'mysql':
+                with db.cursor() as cur:
+                    cur.execute(
+                        'SELECT utc, value FROM weather_data WHERE sensor_id = %s AND bin BETWEEN %s AND %s',
+                        [sensor_id, bin_start, bin_end])
+                    sensor_rows = cur.fetchall()
+            else:  # sqlite
+                with db:
+                    sensor_rows = db.execute(
+                        'SELECT utc, value FROM weather_data WHERE sensor_id = ? AND bin BETWEEN ? AND ?',
+                        [sensor_id, bin_start, bin_end]).fetchall()
+
+            last_ts = None
+            for ts, value in sensor_rows:
+                if sensor_min is None:
+                    sensor_min = value
+                    sensor_max = value
+                else:
+                    sensor_min = min(sensor_min, value)
+                    sensor_max = max(sensor_max, value)
+
+                # Insert a break in the plot line if there is a break between points
+                if last_ts is not None and ts - last_ts > 360:
+                    sensor_data.append(None)
+
+                last_ts = ts
+                sensor_data.append((int(ts * 1000), value))
+
+            if sensor_data:
+                sensors[sensor_name] = {
+                    'color': sensor_color,
+                    'label': sensor_label,
+                    'min': sensor_min,
+                    'max': sensor_max,
+                    'data': sensor_data
+                }
+
+        if len(sensors):
+            plot_data[plot_type] = sensors
+
+    # Generate wind plots
+    for plot_info in config.dashboard.get('wind_types', []):
+        if config.database['type'] == 'mysql':
+            with db.cursor() as cur:
+                cur.execute(
+                    'SELECT id, name, label, color FROM weather_sensors WHERE name IN (%s, %s, %s, %s)',
+                    [plot_info['speed_sensor'], plot_info['direction_sensor'],
+                     plot_info['gust_sensor'], plot_info['lull_sensor']])
+                rows = cur.fetchall()
+        else:  # sqlite
+            with db:
+                rows = db.execute('SELECT id, name, label, color FROM weather_sensors WHERE name IN (?, ?, ?, ?)',
+                                  [plot_info['speed_sensor'], plot_info['direction_sensor'],
+                                   plot_info['gust_sensor'], plot_info['lull_sensor']]).fetchall()
+        sensor_ids = {}
+        label = None
+        color = None
+        for sensor_id, sensor_name, sensor_label, sensor_color in rows:
+            sensor_ids[sensor_name] = sensor_id
+            if sensor_name == plot_info['speed_sensor']:
+                label = sensor_label
+                color = sensor_color
+
+        if config.database['type'] == 'mysql':
+            with db.cursor() as cur:
+                cur.execute(
+                    'SELECT speed.utc, speed.value, direction.value, gust.value, lull.value '
+                    'FROM weather_data speed '
+                    'INNER JOIN weather_data direction ON direction.bin = speed.bin AND direction.sensor_id = %s '
+                    'INNER JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = %s '
+                    'INNER JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = %s '
+                    'WHERE speed.sensor_id = %s AND speed.bin BETWEEN %s AND %s ',
+                    [sensor_ids[plot_info['direction_sensor']],
+                     sensor_ids[plot_info['gust_sensor']],
+                     sensor_ids[plot_info['lull_sensor']],
+                     sensor_ids[plot_info['speed_sensor']], bin_start, bin_end])
+                rows = cur.fetchall()
+        else:  # sqlite
+            with db:
+                rows = db.execute(
+                    'SELECT speed.utc, speed.value, direction.value, gust.value, lull.value '
+                    'FROM weather_data speed '
+                    'INNER JOIN weather_data direction ON direction.bin = speed.bin AND direction.sensor_id = ? '
+                    'INNER JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = ? '
+                    'INNER JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = ? '
+                    'WHERE speed.sensor_id = ? AND speed.bin BETWEEN ? AND ? ',
+                    [sensor_ids[plot_info['direction_sensor']],
+                     sensor_ids[plot_info['gust_sensor']],
+                     sensor_ids[plot_info['lull_sensor']],
+                     sensor_ids[plot_info['speed_sensor']], bin_start, bin_end]).fetchall()
+
+        scatter_data = []
+        speed_data = []
+        speed_min = None
+        speed_max = None
+        scatter_max = None
+        for ts, speed, direction, gust, lull in rows:
+            if scatter_max is None:
+                scatter_max = speed
+                speed_min = lull
+                speed_max = gust
+            else:
+                scatter_max = max(scatter_max, speed)
+                speed_min = min(speed_min, lull)
+                speed_max = max(speed_max, gust)
+
+            speed_data.append((int(ts * 1000), speed, speed - lull, gust - speed))
+
+            scatter_data.append((
+                int(ts * 1000),
+                speed * math.sin(math.radians(direction)),
+                speed * math.cos(math.radians(direction))
+            ))
+
+        if scatter_data:
+            if plot_info['scatter_type'] not in plot_data:
+                plot_data[plot_info['scatter_type']] = {}
+
+            plot_data[plot_info['scatter_type']][plot_info['speed_sensor']] = {
+                'color': color,
+                'label': label,
+                'max': scatter_max,
+                'data': scatter_data
+            }
+
+        if speed_data:
+            if plot_info['speed_type'] not in plot_data:
+                plot_data[plot_info['speed_type']] = {}
+
+            plot_data[plot_info['speed_type']][plot_info['speed_sensor']] = {
+                'color': color,
+                'label': label,
+                'points': {
+                    'radius': 1,
+                    'errorbars': 'y',
+                    'yerr': {'show': True, 'asymmetric': True},
+                },
+                'min': speed_min,
+                'max': speed_max,
+                'data': speed_data
+            }
+
+    output_dir = os.path.dirname(output_path)
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+
+    # Write to a temporary file then move to avoid consumers seeing a partially written file
+    tmp_path = output_path + '.tmp'
+
+    with gzip.open(tmp_path, 'w') as output_file:
+        output_data = {
+            'start': int(start.unix) * 1000,
+            'end': int(end.unix) * 1000,
+            'data': plot_data
+        }
+
+        output_file.write(json.dumps(output_data).encode('utf-8'))
+
+    shutil.move(tmp_path, output_path)
+
+
+def update_json(config, regenerate):
+    if config.dashboard is None:
+        return 0
+
+    if config.database['type'] == 'mysql':
+        import pymysql
+        db = pymysql.connect(host=config.database['host'],
+                             db=config.database['db'],
+                             user=config.database['user'])
+    elif config.database['type'] == 'sqlite':
+        import sqlite3
+        db = sqlite3.connect(config.database['path'])
+    else:
+        return 1
+
+    # Always update latest.json.gz with the last 6 hours of data
+    now = Time.now()
+    margin = 2 * config.bin_length * u.s
+    path = os.path.join(config.dashboard['output_root'], 'latest.json.gz')
+    generate_json(config, db, now - config.dashboard['latest_range'] * u.s - margin, now, path)
+
+    # Always update today.json.gz to include new measurements
+    # HACK: use .datetime to work around missing strftime on ancient astropy
+    date = Time(now.datetime.strftime('%Y-%m-%d'), format='isot', scale='utc') + config.dashboard['start_hour'] * u.hour
+    if date > now:
+        date -= 1 * u.day
+
+    path = os.path.join(config.dashboard['output_root'], 'today.json.gz')
+    generate_json(config, db, date - margin, date + 1 * u.day + margin, path)
+
+    # Loop backwards until we either encounter a cached file or run out of data
+    start_date = Time(config.dashboard['start_date'], format='isot', scale='utc')
+    while True:
+        date -= 1 * u.day
+        path = os.path.join(config.dashboard['output_root'], date.datetime.strftime('%Y/%Y-%m-%d.json.gz'))
+        if (not regenerate and os.path.exists(path)) or date < start_date:
+            break
+
+        generate_json(config, db, date - config.bin_length * u.s, date + 1 * u.day + config.bin_length * u.s, path)
+
+    db.close()
+    return 0
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--regenerate', action='store_true')
+    args = parser.parse_args()
+
+    if 'WEATHERLOG_CONFIG_PATH' in os.environ:
+        config = Config(os.environ['WEATHERLOG_CONFIG_PATH'])
+    else:
+        # Load the config file defined in the WEATHERLOG_CONFIG_PATH environment variable or from the
+        # default system location (/etc/weatherlog/). Exit with an error if zero or multiple are found.
+        files = glob.glob("/etc/weatherlog/*.json")
+        if len(files) != 1:
+            print('error: failed to guess the default config file. ' +
+                  'Run as WEATHERLOG_CONFIG_PATH=/path/to/config.json update-weather-json')
+            sys.exit(1)
+
+        config = Config(files[0])
+    sys.exit(update_json(config, args.regenerate))

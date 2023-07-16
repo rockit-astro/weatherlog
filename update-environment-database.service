@@ -4,8 +4,10 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+Environment=WEATHERLOG_CONFIG_PATH=/etc/weatherlog/lapalma_environment.json
 ExecStart=/usr/bin/env python3 -u /usr/bin/update-weather-database
 ExecStartPost=/usr/bin/env python3 -u /usr/bin/update-weather-json
+ExecStartPost=/usr/bin/env python3 -u /usr/bin/update-weather-database-old
 Restart=always
 RestartSec=30
 
