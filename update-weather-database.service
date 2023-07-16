@@ -1,7 +1,0 @@
-[Unit]
-Description=Polls environment sensors and updates the weather database
-Wants=update-weather-database.timer
-
-[Service]
-ExecStart=/usr/bin/update-weather-database
-

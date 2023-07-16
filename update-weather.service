@@ -1,0 +1,12 @@
+[Unit]
+Description=Polls environment sensors to update the weather database
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/env python3 -u /usr/bin/update-weather-database
+Restart=always
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target

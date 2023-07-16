@@ -6,7 +6,13 @@ RPMBUILD = rpmbuild --define "_topdir %(pwd)/build" \
 
 all:
 	mkdir -p build
-	${RPMBUILD} -ba observatory-weather-database-updater.spec
+	date --utc +%Y%m%d%H%M%S > VERSION
+	${RPMBUILD} --define "_version %(cat VERSION)" -ba rockit-weatherlog.spec
 	mv build/noarch/*.rpm .
-	rm -rf build
+	rm -rf build VERSION
 
+install:
+	@sudo cp update-weather-database /usr/bin/
+	@sudo cp update-weather.service /etc/systemd/system/
+	@echo ""
+	@echo "Installation complete."

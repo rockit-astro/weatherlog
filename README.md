@@ -1,20 +1,13 @@
-## La Palma weather database updater
+## Weather database logger
 
-`update-weather-database` is a command that queries the observatory environment sensors and updates the weather database for use by the [web dashboard](https://github.com/warwick-one-metre/dashboard).
+`update-weather-database` is a command that queries the observatory environment sensors and updates the weather database and dashboard json.
 It is installed as a timed system service that runs every 30 seconds.
-
-See [Software Infrastructure](https://github.com/warwick-one-metre/docs/wiki/Software-Infrastructure) for an overview of the software architecture and instructions for developing and deploying the code.
 
 ### Software Setup
 
-After installing `observatory-weather-database-updater`, the `update-weather-database.timer` must be enabled using:
+After installing `rockit-weatherlog`, the `update-weather` service must be enabled using:
 ```
-sudo systemctl enable update-weather-database.timer
-```
-
-The service will automatically start on system boot, or you can start it immediately using:
-```
-sudo systemctl start update-weather-database.timer
+sudo systemctl enable --now update-weather
 ```
 
 The script requires a MySQL or MariaDB database to be hosted on the same machine.
@@ -27,7 +20,7 @@ sudo mysql_secure_installation
 
 If this gives an error "Cannot connect to local MySQL server through socket" then you may need to start the database service:
 ```
-sudo systemctl start mariadb
+sudo systemctl enable --now mariadb
 ```
 
 Set a root password, remove anonymous accounts, disable remote root login and test database.
