@@ -116,8 +116,8 @@ def generate_json(config, db, start, end, output_path):
                     'SELECT speed.utc, speed.value, direction.value, gust.value, lull.value '
                     'FROM weather_data speed '
                     'INNER JOIN weather_data direction ON direction.bin = speed.bin AND direction.sensor_id = %s '
-                    'INNER JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = %s '
-                    'INNER JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = %s '
+                    'LEFT JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = %s '
+                    'LEFT JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = %s '
                     'WHERE speed.sensor_id = %s AND speed.bin BETWEEN %s AND %s ',
                     [sensor_ids[plot_info['direction_sensor']],
                      sensor_ids[plot_info['gust_sensor']],
@@ -130,8 +130,8 @@ def generate_json(config, db, start, end, output_path):
                     'SELECT speed.utc, speed.value, direction.value, gust.value, lull.value '
                     'FROM weather_data speed '
                     'INNER JOIN weather_data direction ON direction.bin = speed.bin AND direction.sensor_id = ? '
-                    'INNER JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = ? '
-                    'INNER JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = ? '
+                    'LEFT JOIN weather_data gust ON gust.bin = speed.bin AND gust.sensor_id = ? '
+                    'LEFT JOIN weather_data lull ON lull.bin = speed.bin AND lull.sensor_id = ? '
                     'WHERE speed.sensor_id = ? AND speed.bin BETWEEN ? AND ? ',
                     [sensor_ids[plot_info['direction_sensor']],
                      sensor_ids[plot_info['gust_sensor']],
@@ -144,6 +144,10 @@ def generate_json(config, db, start, end, output_path):
         speed_max = None
         scatter_max = None
         for ts, speed, direction, gust, lull in rows:
+            # gust and lull may be null from older versions of vaisalad
+            gust = gust or speed
+            lull = lull or speed
+
             if scatter_max is None:
                 scatter_max = speed
                 speed_min = lull
