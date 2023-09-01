@@ -8,7 +8,7 @@ all:
 	mkdir -p build
 	date --utc +%Y%m%d%H%M%S > VERSION
 	${RPMBUILD} --define "_version %(cat VERSION)" -ba python3-rockit-weatherlog.spec
-	${RPMBUILD} --define "_version %(cat VERSION)" -ba rockit-weatherlog-lapalma.spec
+	${RPMBUILD} --define "_version %(cat VERSION)" -ba rockit-weatherlog.spec
 	mv build/noarch/*.rpm .
 	rm -rf build VERSION
 
