@@ -67,15 +67,10 @@
         "dew_point_delta": {
           "sensor": "dew_point_delta",
           "filter_invalid": true
-        }
-      }
-    },
-    "rg11": {
-      "daemon": "warwick_rain",
-      "method": "last_measurement",
-      "fields": {
-        "unsafe_sensors": {
-          "sensor": "rg11_unsafe"
+        },
+        "rg11_unsafe": {
+          "sensor": "rg11_unsafe",
+          "filter_invalid": true
         }
       }
     },
