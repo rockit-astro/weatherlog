@@ -91,15 +91,6 @@
         }
       }
     },
-    "onemetre_rain" : {
-      "daemon": "onemetre_rain",
-      "method": "last_measurement",
-      "fields": {
-        "unsafe_boards": {
-          "sensor": "onemetre_rain_unsafe"
-        }
-      }
-    },
     "goto_vaisala" : {
       "daemon": "goto_vaisala",
       "method": "last_measurement",
