@@ -71,8 +71,8 @@ INSERT INTO weather_sensors (name, type, label, color) VALUES
     ('clasp_internal_temperature', 'internal_temperature', 'CLASP', '#DE0D92'),
     ('clasp_internal_humidity', 'internal_humidity', 'CLASP', '#DE0D92'),
 
-    ('superwasp_internal_temperature', 'internal_temperature', 'SWASP', '#9933FF'),
-    ('superwasp_internal_humidity', 'internal_humidity', 'SWASP', '#9933FF'),
+    ('sting_internal_temperature', 'internal_temperature', 'STING', '#9933FF'),
+    ('sting_internal_humidity', 'internal_humidity', 'STING', '#9933FF'),
 
     ('goto1_internal_temperature', 'internal_temperature', 'GOTO1', '#22CC44'),
     ('goto1_internal_humidity', 'internal_humidity', 'GOTO1', '#22CC44'),
@@ -120,5 +120,5 @@ INSERT INTO weather_sensors (name, type, label, color) VALUES
     ('ping_onemetre', 'internal_ping', 'W1m', '#009DDC'),
     ('ping_goto1', 'internal_ping', 'GOTO1', '#22CC44'),
     ('ping_clasp', 'internal_ping', 'CLASP', '#DE0D92'),
-    ('ping_superwasp', 'internal_ping', 'SWASP', '#9933FF'),
+    ('ping_superwasp', 'internal_ping', 'STING', '#9933FF'),
     ('ping_wht', 'internal_ping', 'WHT', '#CC0000');

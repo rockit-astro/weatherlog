@@ -240,12 +240,12 @@
           "sensor": "clasp_internal_humidity",
           "filter_invalid": true
         },
-        "superwasp_temperature": {
-          "sensor": "superwasp_internal_temperature",
+        "sting_temperature": {
+          "sensor": "sting_internal_temperature",
           "filter_invalid": true
         },
-        "superwasp_humidity": {
-          "sensor": "superwasp_internal_humidity",
+        "sting_humidity": {
+          "sensor": "sting_internal_humidity",
           "filter_invalid": true
         }
       }
