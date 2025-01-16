@@ -74,15 +74,21 @@
         }
       }
     },
-    "rhusb": {
-      "daemon": "warwick_rhusb",
+    "dome_internal": {
+      "daemon": "warwick_dome_shtstick",
       "method": "last_measurement",
       "fields": {
         "temperature": {
-          "sensor": "internal_temperature"
+          "sensor": "internal_temperature",
+          "filter_invalid": true
         },
         "humidity": {
-          "sensor": "internal_humidity"
+          "sensor": "internal_humidity",
+          "filter_invalid": true
+        },
+        "dew_point_delta": {
+          "sensor": "internal_dew_point_delta",
+          "filter_invalid": true
         }
       }
     },
@@ -95,6 +101,10 @@
         },
         "relative_humidity": {
           "sensor": "heliostat_internal_humidity"
+        },
+        "dew_point_delta": {
+          "sensor": "heliostat_dew_point_delta",
+          "filter_invalid": true
         }
       }
     },
