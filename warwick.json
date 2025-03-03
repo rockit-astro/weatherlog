@@ -82,7 +82,7 @@
           "sensor": "internal_temperature",
           "filter_invalid": true
         },
-        "humidity": {
+        "relative_humidity": {
           "sensor": "internal_humidity",
           "filter_invalid": true
         },
